@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { storage, textDB } from '../../Firebase/firebase';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { collection } from 'firebase/firestore'
 import { v4 } from "uuid";
 import { addDoc } from '@firebase/firestore';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Container, Row } from "react-bootstrap";
+import Resizer from "react-image-file-resizer";
 
 
 export function ImageUploader() {
@@ -27,8 +28,10 @@ export function ImageUploader() {
         if (imageUpload == null) {
           
         } else {
+          const uri = await resizeFile(imageUpload);
+
           const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-          return await uploadBytes(imageRef, imageUpload).then(data => {
+          return await uploadString(imageRef, uri, 'data_url').then(data => {
             getDownloadURL(data.ref).then(val =>{
               const valRef = collection(textDB, 'patentes')
               addDoc(valRef, {nro_patente:nroPatente,
@@ -56,6 +59,13 @@ export function ImageUploader() {
           console.log('Form is not valid. Please check your inputs.');
         }
       };
+
+      const resizeFile = file =>
+        new Promise(resolve => {
+          Resizer.imageFileResizer(file, 300, 300, "JPEG", 25, 0, uri => {
+            resolve(uri);
+          });
+      });
 
       const nroPatenteChangeHandler = ({ event }) => {
         event.preventDefault();
