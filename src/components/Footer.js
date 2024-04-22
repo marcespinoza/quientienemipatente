@@ -11,6 +11,9 @@ function Footer() {
         <Col md="12" className="footer-copywright">
           <h3>Idea y desarrollo: Marcelo Espinoza</h3>
         </Col>
+        <Col md="4" className="footer-copywright">
+          <h3>Formosa - Argentina</h3>
+        </Col>
       </Row>
     </Container>
   );

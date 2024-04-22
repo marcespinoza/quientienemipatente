@@ -31,13 +31,10 @@ function Home() {
     const q = query(
       collection(textDB, 'patentes'),
       where('nro_patente', "==", searchText)
-    );
-    console.log("after");
-
+    )
     const dataDb = await getDocs(q)
     const allData = dataDb.docs.map(val=>({...val.data(),id:val.id}))
-    console.log(allData);
-
+    console.log(allData)
     setData(allData)
   }
 
@@ -57,7 +54,7 @@ function Home() {
       <Container fluid className="home-section" id="home">
         <Particle />
         <Container className="home-content">
-        <Row className="justify-content-center align-items-center" style={{ position: 'relative', height: '50vh' }}>
+        <Row className="justify-content-center align-items-center" style={{ position: 'relative', height: '30vh' }}>
           <Col md={5} className="d-flex justify-content-center align-items-center"
             style={{
               position: 'absolute',
@@ -65,73 +62,82 @@ function Home() {
               backgroundPosition: "center", 
               backgroundRepeat:'no-repeat',
               backgroundSize: "contain", 
-              width: "50%", // Modifica el ancho para que ocupe todo el ancho del Row
+              width: "80%", 
               height:'80%', 
-              maxHeight: "450px",
               textAlign: 'center' 
             }}>  
-          <div style={{ width: "35%" }}> {/* Contenedor que limita el ancho del TextField */}
-              <div className="d-flex justify-content-center"> {/* Contenedor para centrar el TextField */}
-              <Col>
+              <div className="d-flex justify-content-center"> 
+              <div style={{ width: "65%" }}> 
+
+              <Col className="d-flex justify-content-center align-items-center">
                 <TextField
                   id="nro_patente"
+                  autoComplete="off"
                   variant="standard"
                   value={searchText}
                   onChange={onSearchChange}
                   InputProps={{
                     style: {
-                      width: "100%", // Reducción del ancho del TextField
+                      width: "100%", 
+                      height: "30%",
                       fontSize: 35,
-                      padding: 0,
-                      
+                      padding: 0,                      
                       marginBottom:"2%",
-                      textAlign: 'center'
                     },
-                    endAdornment: (
-                      <IconButton disabled={enableSearchInput}>
-                        <SearchOutlined />
-                      </IconButton>
-                    ),
                   }}
                 />
                 <Button
+                  className="search-button"
                   variant="contained"
-                  size="medium"
                   disabled={enableSearchInput}
-                  onClick={getData}
-                  >
+                  onClick={getData}>
                   Buscar
                 </Button>
                 </Col>
               </div>
             </div>
   </Col>
-</Row>
-  </Container>
-  </Container>
-  <Container fluid className="home-about-section" id="about" >
-  <Container>
-  <Row >    
-        {data.map((image, idx) => {
-            return (
-                <Col key={idx} xs={6} md={4} lg={3} >
-                  <Card className="border border-dark border-1" >
-                    <Card.Img  variant="center" style={{ display:'inline-block', width: '200px', height:'200px', backgroundSize:'cover', backgroundPosition:'center center'}}src={image.imgUrl}/ >
-                      <Card.Body>
-                        <Card.Text>
-                        {image.txtVal}
-                        </Card.Text>
-                        <Card.Text>
-                        "Marcelo"
-                        </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-            )
-        })}
-        </Row>
+  </Row>
+    <Row className="justify-content-center align-items-center">
+      <Col className="d-flex justify-content-center align-items-center">
+        <Button
+          className="search-button-mobile"
+          variant="contained"
+          disabled={enableSearchInput}
+          onClick={getData}>
+          Buscar
+        </Button>
+      </Col>
+    </Row>
+       <Container fluid className="home-about-section" id="about" >
+        <Container>
+        <Row className="d-flex justify-content-center">    
+              {data.map((data, idx) => {
+                  return (
+                      <Col key={idx} xs={6} md={4} lg={3} >
+                        <Card className="border border-dark border-1" style={{backgroundColor: "#212529"}} >
+                          <Card.Img  variant="center" style={{ display:'inline-block', backgroundSize:'cover', backgroundPosition:'center center'}}src={data.imgUrl}/ >
+                            <Card.Body>
+                              <Card.Text>
+                              {data.txtVal}
+                              </Card.Text>
+                              <Card.Text  style={{color: "white"}}>
+                                {data.celular}
+                              </Card.Text>
+                              <Card.Text style={{color: "white"}}>
+                                {data.correo}
+                              </Card.Text>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                  )
+              })}
+              </Row>
         </Container>
         </Container>
+  </Container>
+  </Container>
+  
     </section>
   );
 }

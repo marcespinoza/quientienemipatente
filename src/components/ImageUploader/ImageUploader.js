@@ -101,7 +101,7 @@ export function ImageUploader() {
               <>
               <div className="col-md-6 mx-auto text-center">
                 <hr />
-                <input required type="text" value={nroPatente}  className="form-control text-center" onChange={event => setNroPatente(event.target.value.toUpperCase())} placeholder="Nro. patente"/>
+                <input required type="text"  className="form-control text-center" onChange={event => setNroPatente(event.target.value.toUpperCase())} placeholder="Nro. patente"/>
               <hr />
                 <input  required type="text" 
                         name="celular" 
