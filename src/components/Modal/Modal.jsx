@@ -16,7 +16,7 @@ const Modal = ({ open, onClose }) => {
             X
           </p>
           <div className='content'>
-            <h1>No se encontró ninguna patente</h1>
+            <h3>No se encontró ninguna patente</h3>
             <p>Recordá que debes ingresar el número de patente completo.</p>
           </div>
           <div className='btnContainer'>

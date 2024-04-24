@@ -8,33 +8,43 @@ function AboutCard() {
       <Card.Body>
         <blockquote className="blockquote mb-0">
           <p style={{ textAlign: "justify" }}>
-            Hi Everyone, I am <span className="purple">Soumyajit Behera </span>
-            from <span className="purple"> Bhubaneswar, India.</span>
             <br />
-            I am currently employed as a software developer at Juspay.
-            <br />
-            I have completed Integrated MSc (IMSc) in Maths and Computing at BIT
-            Mesra.
-            <br />
-            <br />
-            Apart from coding, some other activities that I love to do!
+            Que fotos o imágenes puedo subir?
           </p>
           <ul>
             <li className="about-activity">
-              <ImPointRight /> Playing Games
-            </li>
-            <li className="about-activity">
-              <ImPointRight /> Writing Tech Blogs
-            </li>
-            <li className="about-activity">
-              <ImPointRight /> Travelling
+              <ImPointRight /> Fotos o imágenes de patentes que encontraste, no de aquella que estás buscando.
             </li>
           </ul>
-
-          <p style={{ color: "rgb(155 126 172)" }}>
-            "Strive to build things that make a difference!"{" "}
+          <p style={{ textAlign: "justify" }}>
+            <br />
+            Como busco una patente?
           </p>
-          <footer className="blockquote-footer">Soumyajit</footer>
+          <ul>
+            <li className="about-activity">
+              <ImPointRight /> Para buscar una patente tenés que ingresar todos los números y letras, no se realiza una búsqueda
+              parcial (Por ejemplo ingresando solo los números)
+            </li>
+          </ul>
+          <p style={{ textAlign: "justify" }}>
+            <br />
+            Porque me pide celular y correo?
+          </p>
+          <ul>
+            <li className="about-activity">
+              <ImPointRight /> El celular y correo sirven para que te pueda contactar el dueño de la patente. No se utiliza
+              para otros fines.
+            </li>
+          </ul>
+          <p style={{ textAlign: "justify" }}>
+            <br />
+            Que pasa si ingreso mal algún dato?
+          </p>
+          <ul>
+            <li className="about-activity">
+              <ImPointRight /> Para este caso y cualquier otra duda podes escribirme a marceloespinoza00@gmail.com
+            </li>
+          </ul>
         </blockquote>
       </Card.Body>
     </Card>

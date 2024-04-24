@@ -6,6 +6,7 @@ import logo from "../Assets/logo.png";
 import { Link } from "react-router-dom";
 import { SiGooglehome } from "react-icons/si";
 import { FaArrowAltCircleUp } from "react-icons/fa";
+import { BsQuestionSquare } from "react-icons/bs";
 
 
 function NavBar() {
@@ -45,6 +46,16 @@ function NavBar() {
         </Navbar.Toggle>
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto" defaultActiveKey="#home">
+          <Nav.Item>
+              <Nav.Link
+                as={Link}
+                to="/about"
+                onClick={() => updateExpanded(false)}              >
+                <BsQuestionSquare style={{ marginBottom: "2px" }}
+                />{" "}
+                Preguntas frecuentes
+              </Nav.Link>
+            </Nav.Item>
             <Nav.Item>
               <Nav.Link as={Link} to="/resume" onClick={() => updateExpanded(false)}>
                 <FaArrowAltCircleUp style={{ marginBottom: "2px" }} /> Subir imagen
