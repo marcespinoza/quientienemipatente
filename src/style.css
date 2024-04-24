@@ -750,6 +750,17 @@ button:focus {
   }
 }
 
+/*-----warning-----*/
 
+.warning h5 {
+  font-size: 1em;
+  text-align: center !important;
+}
+
+@media (min-width:500px) {
+  .warning h5 {
+    font-size: 15px;
+  }
+}
 
 /* --------- */

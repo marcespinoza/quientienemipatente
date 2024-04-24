@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 import { addDoc } from '@firebase/firestore';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Resizer from "react-image-file-resizer";
 
 
@@ -82,6 +82,13 @@ export function ImageUploader() {
           open={showLoader}>
           <CircularProgress color="inherit" />
         </Backdrop>
+        <Row>
+        <Col md="12" className="warning">
+            <h5>Esta página es solo para subir alguna patente que hayas encontrado, no la que estás buscando.</h5>
+            <h5>Si perdiste tu patente utilizá el buscador.</h5>
+            <h5>Gracias por tu colaboración.</h5>
+        </Col>
+      </Row>        
         <div className="col-md-5 mx-auto d-flex flex-column text-center">
               <input
                 required
