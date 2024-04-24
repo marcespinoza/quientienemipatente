@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { storage, textDB } from '../../Firebase/firebase';
+import React, {useState } from 'react';
+import {textDB } from '../../Firebase/firebase';
 
 import {Card, Container, Row, Col } from "react-bootstrap";
 import Particle from "../Particle";
-import {TextField, IconButton, Button} from '@mui/material';
-import SearchOutlined from '@mui/icons-material/SearchOutlined';
+import {TextField, Button} from '@mui/material';
 import imagenPatente from '../../Assets/Projects/patente_bg.png'
 import { collection, query, where } from 'firebase/firestore'
-import {  getDocs } from '@firebase/firestore';
+import { getDocs } from '@firebase/firestore';
 import ima from '../../Assets/about.png'
-import Type from "./Type";
+import Modal from '../Modal/Modal';
 
 
 function Home() {
 
   const [enableSearchInput, setSearchInput] = useState(false);
-  const [searchText, setSearchText] = React.useState("");
+  const [searchText, setSearchText] = React.useState('');
   const [data, setData] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
   const patentes = [
     { txtVal:'Russia', imgUrl:ima},
@@ -26,8 +26,6 @@ function Home() {
   ];
 
   const getData = async () => {
-    console.log(searchText);
-
     const q = query(
       collection(textDB, 'patentes'),
       where('nro_patente', "==", searchText)
@@ -35,17 +33,22 @@ function Home() {
     const dataDb = await getDocs(q)
     const allData = dataDb.docs.map(val=>({...val.data(),id:val.id}))
     console.log(allData)
-    setData(allData)
+    if (dataDb.exists) {
+      setData(allData)
+    } else {
+      console.log("No such document!")
+      setOpenModal(true)
+    }
   }
 
   const onSearchChange = (e) => {
     if(e.target.value.length >= 6){
       e.preventDefault();
       setSearchInput(false);
-      setSearchText(e.target.value);
+      setSearchText(("" + e.target.value).toUpperCase());
     } else {
       setSearchInput(true)
-      setSearchText(e.target.value)
+      setSearchText(("" + e.target.value).toUpperCase())
     }
   };
 
@@ -53,6 +56,9 @@ function Home() {
     <section>
       <Container fluid className="home-section" id="home">
         <Particle />
+        <Modal 
+          open={openModal} 
+          onClose={() => setOpenModal(false)} />
         <Container className="home-content">
         <Row className="justify-content-center align-items-center" style={{ position: 'relative', height: '30vh' }}>
           <Col md={5} className="d-flex justify-content-center align-items-center"
@@ -75,7 +81,7 @@ function Home() {
                   autoComplete="off"
                   variant="standard"
                   value={searchText}
-                  onChange={onSearchChange}
+                  onChange={ e => onSearchChange(e)}
                   InputProps={{
                     style: {
                       width: "100%", 
@@ -86,13 +92,6 @@ function Home() {
                     },
                   }}
                 />
-                <Button
-                  className="search-button"
-                  variant="contained"
-                  disabled={enableSearchInput}
-                  onClick={getData}>
-                  Buscar
-                </Button>
                 </Col>
               </div>
             </div>
@@ -103,7 +102,6 @@ function Home() {
         <Button
           className="search-button-mobile"
           variant="contained"
-          disabled={enableSearchInput}
           onClick={getData}>
           Buscar
         </Button>

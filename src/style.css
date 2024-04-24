@@ -750,10 +750,6 @@ button:focus {
   }
 }
 
-@media screen and (min-width:400px) {
-  .search-button-mobile {
-    display: none !important;
-  }
-}
+
 
 /* --------- */

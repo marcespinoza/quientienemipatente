@@ -8,7 +8,7 @@ function Footer() {
   return (
     <Container fluid className="footer">
       <Row>
-        <Col md="12" className="footer-copywright">
+        <Col md="4" className="footer-copywright">
           <h3>Idea y desarrollo: Marcelo Espinoza</h3>
         </Col>
         <Col md="4" className="footer-copywright">
