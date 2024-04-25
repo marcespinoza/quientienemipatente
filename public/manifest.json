@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Quien tiene mi patente",
+  "name": "Encontrá tu patente perdida.",
   "icons": [
     {
       "src": "favicon.ico",

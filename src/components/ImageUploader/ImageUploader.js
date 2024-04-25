@@ -62,7 +62,7 @@ export function ImageUploader() {
 
       const resizeFile = file =>
         new Promise(resolve => {
-          Resizer.imageFileResizer(file, 300, 300, "JPEG", 25, 0, uri => {
+          Resizer.imageFileResizer(file, 400, 400, "JPEG", 25, 0, uri => {
             resolve(uri);
           });
       });

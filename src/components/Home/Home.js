@@ -5,8 +5,7 @@ import {Card, Container, Row, Col } from "react-bootstrap";
 import Particle from "../Particle";
 import {TextField, Button} from '@mui/material';
 import imagenPatente from '../../Assets/Projects/patente_bg.png'
-import { collection, query, where } from 'firebase/firestore'
-import { getDocs } from '@firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore'
 import ima from '../../Assets/about.png'
 import Modal from '../Modal/Modal';
 
@@ -26,14 +25,15 @@ function Home() {
   ];
 
   const getData = async () => {
+    setData([])
     const q = query(
       collection(textDB, 'patentes'),
       where('nro_patente', "==", searchText)
-    )
-    const dataDb = await getDocs(q)
-    const allData = dataDb.docs.map(val=>({...val.data(),id:val.id}))
-    console.log(allData)
-    if (dataDb.exists) {
+    );
+    const dataDb = await getDocs(q);
+    if (!dataDb.empty) {
+      const allData = dataDb.docs.map(val=>({...val.data(),id:val.id}))
+      console.log(allData)
       setData(allData)
     } else {
       console.log("No such document!")
