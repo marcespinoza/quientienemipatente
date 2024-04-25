@@ -60,6 +60,12 @@ function Home() {
           open={openModal} 
           onClose={() => setOpenModal(false)} />
         <Container className="home-content">
+        <Row>
+        <Col md="12" className="warning">
+            <h5>Perdiste tu patente? Buscala acá</h5>
+            <h5>Encontraste una patente? Subila acá.</h5>
+        </Col>
+        </Row>
         <Row className="justify-content-center align-items-center" style={{ position: 'relative', height: '30vh' }}>
           <Col md={5} className="d-flex justify-content-center align-items-center"
             style={{

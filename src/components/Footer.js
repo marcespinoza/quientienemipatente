@@ -12,7 +12,7 @@ function Footer() {
           <h3>Idea y desarrollo: Marcelo Espinoza</h3>
         </Col>
         <Col md="4" className="footer-copywright">
-          <h3>Producto 100% formoseño</h3>
+          <h3>Formosa - Argentina</h3>
         </Col>
       </Row>
     </Container>
