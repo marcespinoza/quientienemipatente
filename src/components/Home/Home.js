@@ -79,7 +79,7 @@ function Home() {
               textAlign: 'center' 
             }}>  
               <div className="d-flex justify-content-center"> 
-              <div style={{ width: "65%" }}> 
+              <div style={{ width: "55%" }}> 
 
               <Col className="d-flex justify-content-center align-items-center">
                 <TextField
@@ -87,15 +87,13 @@ function Home() {
                   autoComplete="off"
                   variant="standard"
                   value={searchText}
+                  placeholder='XX123XX'
                   onChange={ e => onSearchChange(e)}
+                  style={{fontSize: '45px'}} 
+                  inputProps={{ style: { fontSize: "2.5rem", marginBottom:0, textAlign:'center' } }}
                   InputProps={{
-                    style: {
                       width: "100%", 
-                      height: "30%",
-                      fontSize: 35,
-                      padding: 0,                      
-                      marginBottom:"2%",
-                    },
+                      disableUnderline: true
                   }}
                 />
                 </Col>

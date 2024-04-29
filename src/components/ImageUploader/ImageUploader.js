@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { storage, textDB } from '../../Firebase/firebase';
 import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { collection } from 'firebase/firestore'
@@ -8,7 +8,9 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Container, Row, Col } from "react-bootstrap";
 import Resizer from "react-image-file-resizer";
-
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Cookies from 'universal-cookie';
 
 export function ImageUploader() {
 
@@ -22,26 +24,36 @@ export function ImageUploader() {
     const [correo, setCorreo] = React.useState('');
     const [nroPatente, setNroPatente] = React.useState('');
     const [showLoader, setShowLoader] = React.useState('');
+    const [showModal, setShowModal] = useState(false);
     const formRef = useRef(null);
+    const cookies = new Cookies('registered');
 
     async function uploadImage() {
         if (imageUpload == null) {
           
         } else {
           const uri = await resizeFile(imageUpload);
-
           const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
           return await uploadString(imageRef, uri, 'data_url').then(data => {
             getDownloadURL(data.ref).then(val =>{
               const valRef = collection(textDB, 'patentes')
-              addDoc(valRef, {nro_patente:nroPatente,
-                              provincia:"Formosa",
-                              fecha:new Date().toLocaleString(),
-                              celular:celular, 
-                              correo:correo, 
-                              imgUrl: val})
-            })
+              try {
+                addDoc(valRef, {nro_patente:nroPatente,
+                                provincia:"Formosa",
+                                fecha:new Date().toLocaleString(),
+                                celular:celular, 
+                                correo:correo, 
+                                imgUrl: val})
+                console.log('Imagen subida correctamente')               
+              } catch {
+                console.log('Error subiendo imagen')
+              }
+            }).catch(error => {
+              console.error("Error saving post : ", error);
           })
+          }).catch(error => {
+            console.error("Error saving post : ", error);
+        })
        }
       }             
 
@@ -67,14 +79,41 @@ export function ImageUploader() {
           });
       });
 
-      const nroPatenteChangeHandler = ({ event }) => {
-        event.preventDefault();
-        setNroPatente(event.target.value.toUpperCase())
-      }
+      const handleClose = () => setShowModal(false);
+      const handleShow = () => setShowModal(true);
+
+      useEffect(()=>{
+        /* if (cookies.get('registered')) {
+          setShowModal(false); //Modal does not open if cookie exists
+        } else if (!cookies.get('registered')) {
+           cookies.set('registered', 'true', {
+            path: '/',
+           }); */
+           setShowModal(true); //Creates a cookie and shows modal.
+        
+      },[])
 
     return (
       <div>
       <Container fluid className="resume-section">
+        
+      <Modal show={showModal} onHide={handleClose} centered closeButton>
+          <Modal.Footer>
+          <Container>
+          <Row className="justify-content-center align-items-center">
+          <Button variant="secondary" onClick={handleClose} style={{  marginBottom: "10px" }}>
+            Encontré una patente
+          </Button>
+          </Row>
+
+          <Row>
+          <Button variant="primary" onClick={handleClose}>
+            Estoy buscando mi patente
+          </Button>
+          </Row>
+          </Container>
+        </Modal.Footer>
+      </Modal>
       <form ref={formRef} onSubmit={handleSubmit}>
       <Row style={{ justifyContent: "center", paddingBottom: "30px" }}>
         <Backdrop
@@ -107,7 +146,7 @@ export function ImageUploader() {
               <>
               <div className="col-md-6 mx-auto text-center">
                 <hr />
-                <input required type="text"  className="form-control text-center" value={nroPatente} onChange={event => setNroPatente(event.target.value.toUpperCase())} placeholder="Nro. patente"/>
+                <input required type="text"  className="form-control text-center" value={nroPatente} onChange={event => setNroPatente(event.target.value.toUpperCase().trim())} placeholder="Nro. patente"/>
               <hr />
                 <input  required type="text" 
                         name="celular" 
