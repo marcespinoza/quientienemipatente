@@ -11,13 +11,14 @@ import Resizer from "react-image-file-resizer";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Cookies from 'universal-cookie';
+import FormFields from '../FormField/FormField';
+
 
 export function ImageUploader() {
 
-    const [image, setImage] = React.useState('');
     const [progress, setProgress] = React.useState(0);
     const [previewImage, setPreviewImage] = React.useState(0);
-    const [imageUpload, setImageUpload] = React.useState(null);
+    const [imageUpload, setImageUpload] = React.useState(0);
     const [isLoading, setIsLoading] = React.useState(false);
     const [showImg, setShowImg] = useState(false);
     const [celular, setCelular] = React.useState('');
@@ -25,10 +26,11 @@ export function ImageUploader() {
     const [nroPatente, setNroPatente] = React.useState('');
     const [showLoader, setShowLoader] = React.useState('');
     const [showModal, setShowModal] = useState(false);
+    const [hideImageInput, setHideImageInput] = useState(false);
     const formRef = useRef(null);
     const cookies = new Cookies('registered');
 
-    async function uploadImage() {
+    async function subirPatenteConImagen() {
         if (imageUpload == null) {
           
         } else {
@@ -62,7 +64,7 @@ export function ImageUploader() {
         const isFormValid = formRef.current.checkValidity();    
         if (isFormValid) {
           setShowLoader(true)
-          const result = uploadImage()
+          const result = subirPatenteConImagen()
           setShowLoader(false)
           console.log('Form is valid! Submitting...'+result);
           setShowImg(!showImg)
@@ -79,8 +81,18 @@ export function ImageUploader() {
           });
       });
 
-      const handleClose = () => setShowModal(false);
-      const handleShow = () => setShowModal(true);
+      const handleModalOptions = () => {
+        setShowModal(false)
+      };
+
+      const encontrePatente = () => {
+        setHideImageInput(true)
+        setShowModal(false)
+      };
+
+      const buscoPatente = () => {
+        setShowModal(false)
+      };
 
       useEffect(()=>{
         /* if (cookies.get('registered')) {
@@ -96,25 +108,6 @@ export function ImageUploader() {
     return (
       <div>
       <Container fluid className="resume-section">
-        
-      <Modal show={showModal} onHide={handleClose} centered closeButton>
-          <Modal.Footer>
-          <Container>
-          <Row className="justify-content-center align-items-center">
-          <Button variant="secondary" onClick={handleClose} style={{  marginBottom: "10px" }}>
-            Encontré una patente
-          </Button>
-          </Row>
-
-          <Row>
-          <Button variant="primary" onClick={handleClose}>
-            Estoy buscando mi patente
-          </Button>
-          </Row>
-          </Container>
-        </Modal.Footer>
-      </Modal>
-      <form ref={formRef} onSubmit={handleSubmit}>
       <Row style={{ justifyContent: "center", paddingBottom: "30px" }}>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -123,10 +116,9 @@ export function ImageUploader() {
         </Backdrop>
         <Row>
         <Col md="12" className="warning">
-            <h5>Esta página es solo para subir alguna patente que hayas encontrado, no la que estás buscando.</h5>
-            <h5>Si perdiste tu patente utilizá el buscador.</h5>
-            <h5>Gracias por tu colaboración.</h5>
-        </Col>
+            <h5>Antes de subir la foto de la patente que encontraste, fijate en el buscador si alguien
+              ya lo reportó.</h5>
+          </Col>
       </Row>        
         <div className="col-md-5 mx-auto d-flex flex-column text-center">
               <input
@@ -135,42 +127,16 @@ export function ImageUploader() {
                 id='selectFile'
                 accept="image/*"
                 onChange={(e) => {
-                  setImage(URL.createObjectURL(e.target.files[0]));
                   setPreviewImage(URL.createObjectURL(e.target.files[0]));
                   setImageUpload(e.target.files[0]);
                   setShowImg(!showImg)
                 }}
                 className="form-control mt-5 mb-2"
               />
-              {showImg && <img id="previewImage" src={previewImage} alt="image"/>}            
-              <>
-              <div className="col-md-6 mx-auto text-center">
-                <hr />
-                <input required type="text"  className="form-control text-center" value={nroPatente} onChange={event => setNroPatente(event.target.value.toUpperCase().trim())} placeholder="Nro. patente"/>
-              <hr />
-                <input  required type="text" 
-                        name="celular" 
-                        pattern="[0-9]{10}" 
-                        className="form-control text-center" 
-                        onChange={(e) => { setCelular(e.target.value) }} 
-                        placeholder="Celular"
-                        onInvalid={e => e.target.setCustomValidity('Mínimo 10 caracteres')}
-                        onInput={e => e.target.setCustomValidity("")}
-                  />
-              <hr />
-                <input required type="email" name="correo"  className="form-control text-center" onChange={(e) => { setCorreo(e.target.value) }} placeholder="Correo"  />
-              <input
-                id="submit"
-                type="submit"
-                disabled={!showImg}
-                className="btn btn-primary mt-5"
-                value="Guardar"
-              />
-              </div>
-            </>
+               {showImg && <img id="previewImage" src={previewImage} alt="image"/>}           
         </div>
+        <FormFields licensePlate={{ imageName: imageUpload.name}}/>
         </Row>
-       </form> 
        </Container>
     </div>
     );

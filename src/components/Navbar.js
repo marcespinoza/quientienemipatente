@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { SiGooglehome } from "react-icons/si";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import { BsQuestionSquare } from "react-icons/bs";
+import { BsMegaphoneFill } from "react-icons/bs";
 
 
 function NavBar() {
@@ -55,12 +56,17 @@ function NavBar() {
                 />{" "}
                 Preguntas frecuentes
               </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={Link} to="/resume" onClick={() => updateExpanded(false)}>
-                <FaArrowAltCircleUp style={{ marginBottom: "2px" }} /> Subir imagen
-              </Nav.Link>
-            </Nav.Item>        
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link as={Link} to="/licenseplateuploader" onClick={() => updateExpanded(false)}>
+              <FaArrowAltCircleUp style={{ marginBottom: "2px" }} /> Subir imagen patente
+            </Nav.Link>
+          </Nav.Item>  
+          <Nav.Item>
+            <Nav.Link as={Link} to="/licenseplatereporter" onClick={() => updateExpanded(false)}>
+              <BsMegaphoneFill style={{ marginBottom: "2px" }} /> Reportar mi patente
+            </Nav.Link>
+          </Nav.Item>      
           </Nav>
         </Navbar.Collapse>
       </Container>
