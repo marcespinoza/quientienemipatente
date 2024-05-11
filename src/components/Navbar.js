@@ -46,17 +46,7 @@ function NavBar() {
           <span></span>
         </Navbar.Toggle>
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto" defaultActiveKey="#home">
-          <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/about"
-                onClick={() => updateExpanded(false)}              >
-                <BsQuestionSquare style={{ marginBottom: "2px" }}
-                />{" "}
-                Preguntas frecuentes
-              </Nav.Link>
-          </Nav.Item>
+          <Nav className="ms-auto" defaultActiveKey="#home">         
           <Nav.Item>
             <Nav.Link as={Link} to="/licenseplateuploader" onClick={() => updateExpanded(false)}>
               <FaArrowAltCircleUp style={{ marginBottom: "2px" }} /> Subir imagen patente
@@ -67,6 +57,12 @@ function NavBar() {
               <BsMegaphoneFill style={{ marginBottom: "2px" }} /> Reportar mi patente
             </Nav.Link>
           </Nav.Item>      
+          <Nav.Item>
+              <Nav.Link
+                as={Link} to="/about"  onClick={() => updateExpanded(false)}>
+                <BsQuestionSquare style={{ marginBottom: "2px" }} />Preguntas frecuentes
+              </Nav.Link>
+          </Nav.Item>
           </Nav>
         </Navbar.Collapse>
       </Container>

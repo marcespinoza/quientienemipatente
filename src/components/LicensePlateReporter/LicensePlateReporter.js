@@ -13,7 +13,7 @@ import Button from 'react-bootstrap/Button';
 import Cookies from 'universal-cookie';
 import FormFields from '../FormField/FormField';
 
-export function ImageUploader() {
+export function LicensePlateReporter() {
 
     const [image, setImage] = React.useState('');
     const [progress, setProgress] = React.useState(0);
@@ -24,7 +24,7 @@ export function ImageUploader() {
     const [celular, setCelular] = React.useState('');
     const [correo, setCorreo] = React.useState('');
     const [nroPatente, setNroPatente] = React.useState('');
-    const [showLoader, setShowLoader] = React.useState('');
+    const [showLoader, setShowLoader] = React.useState(false);
     const [showModal, setShowModal] = useState(false);
     const [hideImageInput, setHideImageInput] = useState(false);
     const formRef = useRef(null);
@@ -119,11 +119,11 @@ export function ImageUploader() {
             <h5>Antes de reportar tu patente, usá el buscador para ver si alguien ya la encontró.</h5>
         </Col>
       </Row>        
-        <FormFields/>
+        <FormFields caller= 'reporter'/>
         </Row>
        </Container>
     </div>
     );
 }
 
-export default ImageUploader;
+export default LicensePlateReporter;

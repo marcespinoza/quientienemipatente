@@ -11,8 +11,10 @@ import Resizer from "react-image-file-resizer";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Cookies from 'universal-cookie';
+import { ToastContainer, toast, Slide } from 'react-toastify';
 
-export  default function FormFields({licensePlate}) {
+
+export  default function FormFields({licensePlate, caller, updateParentVariable, toastError}) {
 
   
   const [image, setImage] = React.useState('');
@@ -29,13 +31,12 @@ export  default function FormFields({licensePlate}) {
   const [hideImageInput, setHideImageInput] = useState(false);
   const formRef = useRef(null);
   const cookies = new Cookies('registered');
+  const imageErrorToast = () => toast("Falta cargar una imagen!");
 
-  async function subirPatenteConImagen() {
-      if (imageUpload == null) {
-        
-      } else {
-        const uri = await resizeFile(imageUpload);
-        const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+
+  async function uploadLicensePlateImage() {
+        const uri = await resizeFile(licensePlate.imageName);
+        const imageRef = ref(storage, `images/${licensePlate.imageName.name + v4()}`);
         return await uploadString(imageRef, uri, 'data_url').then(data => {
           getDownloadURL(data.ref).then(val =>{
             const valRef = collection(textDB, 'patentes')
@@ -56,7 +57,6 @@ export  default function FormFields({licensePlate}) {
         }).catch(error => {
           console.error("Error saving post : ", error);
       })
-     }
     }    
     
     async function uploadReportedLicensePlate() {
@@ -73,16 +73,36 @@ export  default function FormFields({licensePlate}) {
       }
     } 
 
+    function checkFormValidity() {
+      if(caller==='reporter' && formRef.current.checkValidity())
+        return true
+      else if(caller==='uploader' && formRef.current.checkValidity()){
+        if(licensePlate.imageName==null){
+          toastError()
+          return false
+        } else {
+          console.log(licensePlate)
+          return true
+        }
+      }
+      else 
+        return false
+    }
+
     const handleSubmit = (event) => {
       event.preventDefault();
-      const isFormValid = formRef.current.checkValidity();    
+      const isFormValid = checkFormValidity();    
       if (isFormValid) {
         setShowLoader(true)
-        const result = uploadReportedLicensePlate()
+        if(caller==='reporter')
+          uploadReportedLicensePlate()
+        else
+          uploadLicensePlateImage()
         setShowLoader(false)
-        console.log('Form is valid! Submitting...'+result);
+        console.log('Form is valid! Submitting...');
         setShowImg(!showImg)
         formRef.current.reset();
+        updateParentVariable('')
         setNroPatente('')
       } else {
         console.log('Form is not valid. Please check your inputs.');
@@ -116,7 +136,7 @@ export  default function FormFields({licensePlate}) {
               <>
               <div className="col-md-6 mx-auto text-center">
                 <hr />
-                <input required type="text"  className="form-control text-center" value={licensePlate.imageName} onChange={event => setNroPatente(event.target.value.toUpperCase().trim())} placeholder="Nro. patente"/>
+                <input required type="text"  className="form-control text-center" onChange={event => setNroPatente(event.target.value.toUpperCase().trim())} placeholder="Nro. patente"/>
               <hr />
                 <input  required type="text" 
                         name="celular" 
