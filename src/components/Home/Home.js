@@ -8,6 +8,7 @@ import imagenPatente from '../../Assets/Projects/patente_bg.png'
 import { collection, query, where, getDocs } from 'firebase/firestore'
 import ima from '../../Assets/about.png'
 import Modal from '../Modal/Modal';
+import Home2 from './Home2';
 
 
 function Home() {
@@ -111,8 +112,6 @@ function Home() {
         </Button>
       </Col>
     </Row>
-       <Container fluid className="home-about-section" id="about" >
-        <Container>
         <Row className="d-flex justify-content-center">    
               {data.map((data, idx) => {
                   return (
@@ -135,9 +134,8 @@ function Home() {
                   )
               })}
               </Row>
-        </Container>
-        </Container>
   </Container>
+  <Home2/>
   </Container>
   
     </section>

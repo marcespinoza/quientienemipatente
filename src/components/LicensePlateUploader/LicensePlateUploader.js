@@ -32,10 +32,9 @@ export function LicensePlateUploader() {
       };
 
       const showToastError = () => {
-        console.log('call toast')
         toast.warn('Falta seleccionar imagen', {
           position: "top-center",
-          autoClose: 5000,
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: false,
           pauseOnHover: true,
