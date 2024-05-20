@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { storage, textDB } from '../../Firebase/firebase';
-import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
-import { collection } from 'firebase/firestore'
+import { storage, textDB, } from '../../Firebase/firebase';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { collection, where, query, getDocs } from 'firebase/firestore'
 import { v4 } from "uuid";
 import { addDoc } from '@firebase/firestore';
 import Backdrop from '@mui/material/Backdrop';
@@ -60,8 +60,21 @@ export  default function FormFields({licensePlate, caller, updateParentVariable,
     }    
     
     async function uploadReportedLicensePlate() {
-      const valRef = collection(textDB, 'patentes_perdidas')
-      try {
+      const citiesRef = collection(textDB, "patentes_perdidas");
+     const q = query(citiesRef, where("nro_patente", "==", nroPatente));
+     const querySnapshot = await getDocs(q);
+     if(querySnapshot.empty) {
+      console.log("nichts");
+    }
+     querySnapshot.forEach((doc) => {
+       // doc.data() is never undefined for query doc snapshots
+       console.log(doc.id, " => ", doc.data());
+     });
+      
+          
+      /* try {
+        let docRef = valRef.where('nro_patente', '==', nroPatente);
+
         addDoc(valRef, {nro_patente:nroPatente,
                         provincia:"Formosa",
                         fecha:new Date().toLocaleString(),
@@ -70,7 +83,7 @@ export  default function FormFields({licensePlate, caller, updateParentVariable,
         console.log('Imagen subida correctamente')               
       } catch {
         console.log('Error subiendo imagen')
-      }
+      } */
     } 
 
     function checkFormValidity() {
@@ -96,13 +109,14 @@ export  default function FormFields({licensePlate, caller, updateParentVariable,
         setShowLoader(true)
         if(caller==='reporter')
           uploadReportedLicensePlate()
-        else
+        else {
           uploadLicensePlateImage()
+          updateParentVariable('')
+        }
         setShowLoader(false)
         console.log('Form is valid! Submitting...');
         setShowImg(!showImg)
         formRef.current.reset();
-        updateParentVariable('')
         setNroPatente('')
       } else {
         console.log('Form is not valid. Please check your inputs.');

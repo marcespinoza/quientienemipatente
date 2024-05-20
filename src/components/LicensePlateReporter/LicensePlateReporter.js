@@ -30,49 +30,6 @@ export function LicensePlateReporter() {
     const formRef = useRef(null);
     const cookies = new Cookies('registered');
 
-    async function subirPatenteConImagen() {
-        if (imageUpload == null) {
-          
-        } else {
-          const uri = await resizeFile(imageUpload);
-          const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-          return await uploadString(imageRef, uri, 'data_url').then(data => {
-            getDownloadURL(data.ref).then(val =>{
-              const valRef = collection(textDB, 'patentes')
-              try {
-                addDoc(valRef, {nro_patente:nroPatente,
-                                provincia:"Formosa",
-                                fecha:new Date().toLocaleString(),
-                                celular:celular, 
-                                correo:correo, 
-                                imgUrl: val})
-                console.log('Imagen subida correctamente')               
-              } catch {
-                console.log('Error subiendo imagen')
-              }
-            }).catch(error => {
-              console.error("Error saving post : ", error);
-          })
-          }).catch(error => {
-            console.error("Error saving post : ", error);
-        })
-       }
-      }             
-
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        const isFormValid = formRef.current.checkValidity();    
-        if (isFormValid) {
-          setShowLoader(true)
-          const result = subirPatenteConImagen()
-          setShowLoader(false)
-          console.log('Form is valid! Submitting...'+result);
-          setShowImg(!showImg)
-          formRef.current.reset();
-        } else {
-          console.log('Form is not valid. Please check your inputs.');
-        }
-      };
 
       const resizeFile = file =>
         new Promise(resolve => {
@@ -80,19 +37,6 @@ export function LicensePlateReporter() {
             resolve(uri);
           });
       });
-
-      const handleModalOptions = () => {
-        setShowModal(false)
-      };
-
-      const encontrePatente = () => {
-        setHideImageInput(true)
-        setShowModal(false)
-      };
-
-      const buscoPatente = () => {
-        setShowModal(false)
-      };
 
       useEffect(()=>{
         /* if (cookies.get('registered')) {
